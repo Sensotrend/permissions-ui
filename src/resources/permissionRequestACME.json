@@ -1,0 +1,91 @@
+{
+  "resourceType": "Consent",
+  "id": "f659d9de-f10d-410f-82bf-81592f3e725c",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"></div>"
+  },
+  "status": "proposed",
+  "scope": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/consentscope",
+        "code": "patient-privacy"
+      }
+    ]
+  },
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "INFAO"
+        }
+      ]
+    }
+  ],
+  "patient": {
+    "reference": "Patient/3de2d4ea-1d03-4f0e-b4e8-d01c49598240",
+    "display": "Nikos Proschédio"
+  },
+  "dateTime": "2022-07-02T15:46:18+0300",
+  "organization": [
+    {
+      "reference": "Organization/8887a65f-cf47-4569-88ec-b2c51f7efd83",
+      "display": "Health Data Intermediary"
+    }
+  ],
+  "sourceAttachment": {
+    "title": "Permission to access patient data for scientific research"
+  },
+  "policyRule": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+        "code": "GDPRResearchCD"
+      }
+    ]
+  },
+  "provision": {
+    "actor": [
+      {
+        "role": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+              "code": "CST"
+            }
+          ]
+        },
+        "reference": {
+          "reference": "Organization/8887a65f-cf47-4569-88ec-b2c51f7efd83",
+          "display": "Health Data Intermediary"
+        }
+      },
+      {
+        "role": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+              "code": "PRCP"
+            }
+          ]
+        },
+        "reference": {
+          "reference": "2964720f-cd00-49a6-88ac-dcec56dd7033",
+          "display": "ACME, Inc."
+        }
+      }
+    ],
+    "action": [
+      {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/consentaction",
+            "code": "access"
+          }
+        ]
+      }
+    ]
+  }
+}

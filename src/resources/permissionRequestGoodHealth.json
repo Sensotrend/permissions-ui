@@ -1,0 +1,91 @@
+{
+  "resourceType": "Consent",
+  "id": "21ef1986-3d5c-4658-9d43-1069987f9322",
+  "text": {
+    "status": "generated",
+    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"></div>"
+  },
+  "status": "proposed",
+  "scope": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/consentscope",
+        "code": "patient-privacy"
+      }
+    ]
+  },
+  "category": [
+    {
+      "coding": [
+        {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "INFAO"
+        }
+      ]
+    }
+  ],
+  "patient": {
+    "reference": "Patient/3de2d4ea-1d03-4f0e-b4e8-d01c49598240",
+    "display": "Nikos Proschédio"
+  },
+  "dateTime": "2022-07-02T15:46:18+0300",
+  "organization": [
+    {
+      "reference": "Organization/12c1f4e3-0e2e-4501-ade2-77a76672262c",
+      "display": "Smart Health App"
+    }
+  ],
+  "sourceAttachment": {
+    "title": "Permission to access patient data for their own treatment"
+  },
+  "policyRule": {
+    "coding": [
+      {
+        "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+        "code": "GDPRCONSENT"
+      }
+    ]
+  },
+  "provision": {
+    "actor": [
+      {
+        "role": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+              "code": "CST"
+            }
+          ]
+        },
+        "reference": {
+          "reference": "Organization/12c1f4e3-0e2e-4501-ade2-77a76672262c",
+          "display": "Smart Health App"
+        }
+      },
+      {
+        "role": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+              "code": "PRCP"
+            }
+          ]
+        },
+        "reference": {
+          "reference": "Organization/0726bdfe-a259-4a18-9250-d25cc02fb49a",
+          "display": "Good Health Clinic"
+        }
+      }
+    ],
+    "action": [
+      {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/consentaction",
+            "code": "access"
+          }
+        ]
+      }
+    ]
+  }
+}
