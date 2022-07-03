@@ -35,16 +35,9 @@ export function PermissionsContextProvider({ permissions : propsPermissions, chi
 
   useEffect(() => {
     let timeoutId;
-
     function accessData() {
       Object.values(permissions).filter(p => p.status === 'active').forEach((p) => {
-        const auditEvent = new AuditEvent();
-        const newAuditEvents = {
-          ...auditEvents,
-        };
-    
-        newAuditEvents[p.id].push(auditEvent);
-        setAuditEvents(newAuditEvents);
+        logAccess(p);
       });
       timeoutId = setTimeout(accessData, 10000);
     }
@@ -52,7 +45,7 @@ export function PermissionsContextProvider({ permissions : propsPermissions, chi
     return (() => {
       clearTimeout(timeoutId);
     });
-  }, [permissions, auditEvents, setAuditEvents]);
+  }, [permissions]);
 
   function get(permissionId) {
     const permission = permissions[permissionId];
@@ -80,6 +73,16 @@ export function PermissionsContextProvider({ permissions : propsPermissions, chi
     }
     permission.status = 'rejected';
     set(permission);
+  }
+
+  function logAccess(permission) {
+    const auditEvent = new AuditEvent();
+    const newAuditEvents = {
+      ...auditEvents,
+    };
+
+    newAuditEvents[permission.id].push(auditEvent);
+    setAuditEvents(newAuditEvents);
   }
 
   function set(permission) {
