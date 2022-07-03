@@ -17,11 +17,9 @@ function sortByRecipientName(a, b) {
 }
 
 function Permissions() {
-  const {
-    context,
-  } = useContext(PermissionsContext);
-  const { permissions, lastModified } = context;
+  const { permissions } = useContext(PermissionsContext);
 
+  console.log({ permissions });
   const categorizedPermissions = useMemo(() => {
     const categorized = Object.values(permissions).reduce((o, p) => {
       if (!o[p.status]) {
@@ -36,7 +34,7 @@ function Permissions() {
       rejectedPermissions: categorized.rejected?.sort(sortByRecipientName) || [],
       inactivePermissions: categorized.inactive?.sort(sortByRecipientName) || [],
     };
-  }, [permissions, lastModified]);
+  }, [permissions]);
 
   const {
     requestedPermissions,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import acmePermission from './resources/permissionRequestACME.json';
 import goodHealthPermission from './resources/permissionRequestGoodHealth.json';
@@ -12,34 +12,57 @@ const permissionRequests = [
   acmePermission,
   dubiousPermission,
 ].reduce((o, p) => {
-  o.permissions[p.id] = p;
+  o[p.id] = p;
   return o;
-}, {
-  permissions: {},
-  lastModified: new Date(),
-});
+}, {});
 
 const PermissionsContext = React.createContext({
-  context: {
-    permissions: permissionRequests,
-    lastModified: new Date(),
-  },
+  auditEvents: {},
+  permissions: permissionRequests,
   givePermission: f => f,
   rejectPermission: f => f,
 });
 
 export function PermissionsContextProvider({ permissions : propsPermissions, children }) {
 
-  // const [permissions, setPermissions] = useState(propsPermissions || permissionRequests);
-  const [context, setContext] = useState(propsPermissions || permissionRequests);
+  // const [context, setContext] = useState(propsPermissions || permissionRequests);
+  const [permissions, setPermissions] = useState(propsPermissions || permissionRequests);
+
+  const [auditEvents, setAuditEvents] = useState(Object.keys(permissions).reduce((o, k) => {
+    o[k] = [];
+    return o;
+  }, {}));
+
+  useEffect(() => {
+    let timeoutId;
+    function accessData() {
+      Object.values(permissions).filter(p => p.status === 'active').forEach((p) => {
+        logAccess(p);
+      });
+      timeoutId = setTimeout(accessData, 10000);
+    }
+    accessData();
+    return (() => {
+      clearTimeout(timeoutId);
+    });
+  }, [permissions]);
+
+  const { location } = window;
+  const { search } = location;
+
+  useEffect(() => {
+    console.log('Noticing location change!!');
+  }, [search]);
+
 
   function get(permissionId) {
-    const permission = context.permissions[permissionId];
+    const permission = permissions[permissionId];
     if (!permission || permission.status === 'inactive') {
       // Not modifying an unknown or inactive permission.
       return undefined;
     }
-    return permission;
+    // Make a new object so context listeners notice the change!
+    return { ...permission };
   }
 
   function givePermission(permissionId) {
@@ -60,22 +83,32 @@ export function PermissionsContextProvider({ permissions : propsPermissions, chi
     set(permission);
   }
 
+  function logAccess(permission) {
+    const auditEvent = {
+      time: new Date().getTime(),
+      items: auditEvents[permission.id]?.length,
+    };
+    const newAuditEvents = {
+      ...auditEvents,
+    };
+
+    newAuditEvents[permission.id].push(auditEvent);
+    setAuditEvents(newAuditEvents);
+  }
+
   function set(permission) {
     const newPermissions = {
-      permissions: {
-        ...context.permissions,
-        [permission.id]: permission,
-      },
-      lastModified: new Date(),
+      ...permissions,
+      [permission.id]: permission,
     };
-    setContext(newPermissions);
+    setPermissions(newPermissions);
   }
 
   const state = Object.freeze({
-    context,
+    auditEvents,
+    permissions,
     givePermission,
     rejectPermission,
-    lastModified: new Date(),
   });
 
   return (

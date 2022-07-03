@@ -57,7 +57,7 @@ section#rejected div.permission {
 }
 
 div.permission button {
-  margin-right: 1em;
+  margin: 1em 1em 1em 0;
   /*
   color: white;
   */

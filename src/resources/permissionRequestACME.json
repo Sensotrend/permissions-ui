@@ -36,7 +36,8 @@
     }
   ],
   "sourceAttachment": {
-    "title": "Permission to access patient data for scientific research"
+    "title": "Permission to access patient data for scientific research",
+    "url": "https://healthdataintermediary.example.com/acme/consent-v1.html"
   },
   "policyRule": {
     "coding": [

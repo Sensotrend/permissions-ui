@@ -36,7 +36,8 @@
     }
   ],
   "sourceAttachment": {
-    "title": "Permission to access patient data for their own treatment"
+    "title": "Permission to access patient data for their own treatment",
+    "url": "https://goodhealth.example.com/consent.html"
   },
   "policyRule": {
     "coding": [

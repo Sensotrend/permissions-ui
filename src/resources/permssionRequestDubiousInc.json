@@ -36,7 +36,8 @@
     }
   ],
   "sourceAttachment": {
-    "title": "Permission to access patient data for marketing purposes"
+    "title": "Permission to access patient data for marketing purposes",
+    "url": "https://dubious.example.com/consent.html"
   },
   "policyRule": {
     "coding": [
