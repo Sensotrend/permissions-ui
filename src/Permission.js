@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { useContext } from 'react';
 
-import PermissionsContext from "./PermissionsContext";
+import { download } from './ConsentReceipt';
+import PermissionsContext from './PermissionsContext';
+import consentDetails from './resources/consentDetailsGoodHealth.json';
 
 export function getPrimaryRecipient(permission) {
   return permission?.provision?.actor?.find(a => a?.role?.coding?.some(c =>
@@ -79,17 +81,88 @@ function Permission({ data }) {
       }
       {status !== 'proposed'
         ? (
-          <p>
-            <a
-              href={`?receipt&id=${id}`}
-              onClick={(e) => {
-                e.preventDefault();
-                window.history.pushState(null, document.title, `?receipt&id=${id}`);
-              }}
-            >
-              Download receipt...
-            </a>
-          </p>
+          <details>
+            <summary>Download receipt...</summary>
+            <p>
+              You can download the receipt of the choice you have made regarding this
+              permission request.
+            </p>
+            <p>
+              There are many apps that help you manage these consent receipts, and to 
+              keep track of all the permissions you have given to different apps that care
+              about your rights.
+            </p>
+            <p>
+              <a
+                href={`?receipt&id=${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.history.pushState(null, document.title, `?receipt&id=${id}`);
+                  download(consentDetails);
+                }}
+              >
+                Download Consent Receipt (JWE)
+              </a>
+            </p>
+            <p>
+              <a
+                href={`?receipt&id=${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert('This integration is not yet implemented.');
+                }}
+              >
+                Manage with DataYogi
+              </a>
+            </p>
+            <p>
+              <a
+                href={`?receipt&id=${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert('This integration is not yet implemented.');
+                }}
+              >
+                Manage with DigiMe
+              </a>
+            </p>
+            <p>
+              <a
+                href={`?receipt&id=${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert('This integration is not yet implemented.');
+                }}
+              >
+                Manage with Fair&amp;Smart
+              </a>
+            </p>
+            <p>
+              <a
+                href={`?receipt&id=${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert('This integration is not yet implemented.');
+                }}
+              >
+                Manage with FairDrop
+              </a>
+            </p>
+            <p>
+              <a
+                href={`?receipt&id=${id}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  alert('This integration is not yet implemented.');
+                }}
+              >
+                Manage with Meeco
+              </a>
+            </p>
+
+          </details>
+
+
         )
         : null
       }

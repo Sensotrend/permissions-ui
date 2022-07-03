@@ -1,0 +1,27 @@
+{
+  "jurisdiction": "EU",
+  "moc": "web form",
+  "sub": "dpo.goodhealthclinic@example.com",
+  "notice": "https://goodhealthclinic.example.com/notice",
+  "policy_uri": "https://goodhealthclinic.example.com/privacy.html",
+  "data_controller": {
+    "on_behalf": true,
+    "company": "Good Health Clinic",
+    "address": "7 Feelgood Rd., 12345 Imaginary County, Eu",
+    "email": "dpo.goodhealthclinic@example.com",
+    "phone": "+1 234567890"
+  },
+  "purpose": [
+    [
+      "Treating You",
+      "core_function",
+      "health"
+    ]
+  ],
+  "sensitive": [
+    "health"
+  ],
+  "scopes": "read",
+  "jti": "b9ee1393d7a1300d2095aefcd50003c02c6e47235e02a8718a92d3f7018e8639a52ed14ba9b28c82549d2ddcdac5577c2b528994db8ea2ca83e100f456c9cb5e",
+  "iss": "https://goodhealthclinic.example.com"
+}
