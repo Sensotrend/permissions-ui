@@ -1,3 +1,13 @@
+# permissions-ui
+A React UI module for managing permissions.
+
+©2022 [Sensotrend Oy](https://www.sensotrend.com/). Implemented as part of the Diabetes Data Portability through Open Source Components (DiDaPOSC) project.
+
+The project has received funding from the [Next Generation Internet Initiative](https://www.ngi.eu/) (NGI) within the framework of the [DAPSI Project](https://dapsi.ngi.eu).
+
+European Union’s H2020 research and innovation programme under Grant Agreement no 871498.
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
