@@ -11,6 +11,12 @@
 # production
 /build
 
+# java build
+java-build/
+WebContent/*
+!WebContent/WEB-INF
+!WebContent/META-INF
+
 # misc
 .DS_Store
 .env.local
