@@ -19,7 +19,6 @@ function sortByRecipientName(a, b) {
 function Permissions() {
   const { permissions } = useContext(PermissionsContext);
 
-  console.log({ permissions });
   const categorizedPermissions = useMemo(() => {
     const categorized = Object.values(permissions).reduce((o, p) => {
       if (!o[p.status]) {

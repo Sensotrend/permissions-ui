@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import AuditEvent from './AuditEvent';
 
 import acmePermission from './resources/permissionRequestACME.json';
 import goodHealthPermission from './resources/permissionRequestGoodHealth.json';
@@ -25,7 +26,6 @@ const PermissionsContext = React.createContext({
 
 export function PermissionsContextProvider({ permissions : propsPermissions, children }) {
 
-  // const [context, setContext] = useState(propsPermissions || permissionRequests);
   const [permissions, setPermissions] = useState(propsPermissions || permissionRequests);
 
   const [auditEvents, setAuditEvents] = useState(Object.keys(permissions).reduce((o, k) => {
@@ -46,14 +46,6 @@ export function PermissionsContextProvider({ permissions : propsPermissions, chi
       clearTimeout(timeoutId);
     });
   }, [permissions]);
-
-  const { location } = window;
-  const { search } = location;
-
-  useEffect(() => {
-    console.log('Noticing location change!!');
-  }, [search]);
-
 
   function get(permissionId) {
     const permission = permissions[permissionId];
@@ -84,10 +76,7 @@ export function PermissionsContextProvider({ permissions : propsPermissions, chi
   }
 
   function logAccess(permission) {
-    const auditEvent = {
-      time: new Date().getTime(),
-      items: auditEvents[permission.id]?.length,
-    };
+    const auditEvent = new AuditEvent();
     const newAuditEvents = {
       ...auditEvents,
     };

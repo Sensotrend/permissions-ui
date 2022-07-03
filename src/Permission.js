@@ -8,6 +8,11 @@ export function getPrimaryRecipient(permission) {
     && (c.code === 'PRCP'))).reference?.display;
 };
 
+function renderNarrative(resource) {
+  const narrative = resource.toString();
+  return { __html: narrative.substring(1, narrative.length - 1) };
+}
+
 function Permission({ data }) {
 
   const {
@@ -53,7 +58,7 @@ function Permission({ data }) {
             <summary>Inspect use...</summary>
             <ul>
               {auditEvents[id].map((e => (
-                <li key={`${id}-${e.time}`}>{new Date(e.time).toLocaleString()}</li>
+                <li key={e.id} dangerouslySetInnerHTML={renderNarrative(e)} />
               )))}
             </ul>
             <p>
