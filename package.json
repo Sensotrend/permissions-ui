@@ -21,10 +21,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "clean": "del-cli WebContent/* !WebContent/classes !WebContent/WEB-INF !WebContent/META-INF",
+    "clean": "del-cli webapp/* !webapp/classes !webapp/WEB-INF !webapp/META-INF",
     "build": "react-scripts build",
     "postbuild": "npm run clean && npm run copy-built",
-    "copy-built": "copyfiles -u 1 -a \"build/**/*.*\" WebContent/",
+    "copy-built": "copyfiles -u 1 -a \"build/**/*.*\" webapp/",
     "lint": "./node_modules/eslint/bin/eslint.js src/",
     "test": "react-scripts test"
   },
