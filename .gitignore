@@ -11,6 +11,12 @@
 # production
 /build
 
+# java build
+java-build/
+webapp/*
+!webapp/WEB-INF
+!webapp/META-INF
+
 # misc
 .DS_Store
 .env.local
