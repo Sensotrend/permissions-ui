@@ -1,0 +1,26 @@
+{
+  "jurisdiction": "EU",
+  "moc": "web form",
+  "sub": "dpo.acme@example.com",
+  "notice": "https://acme.example.com/notice",
+  "policy_uri": "https://acme.example.com/privacy.html",
+  "data_controller": {
+    "on_behalf": true,
+    "company": "ACME Corporation, Inc.",
+    "address": "ACME Loop 1, Fairfield, New Jersey, United States",
+    "email": "dpo.acme@example.com",
+    "phone": "+1 9876543210"
+  },
+  "purpose": [
+    [
+      "Provide you with services",
+      "core_function",
+      "health"
+    ]
+  ],
+  "sensitive": [
+    "health"
+  ],
+  "scopes": "read",
+  "iss": "https://acme.example.com"
+}

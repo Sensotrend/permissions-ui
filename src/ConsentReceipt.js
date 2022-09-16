@@ -4,7 +4,17 @@ import { v4 as uuidv4 } from 'uuid';
 
 const PRIVATE_KEY = generateSecret('HS256');
 
-export function download(data) {
+export function download(data, mimetype = 'application/json') {
+  const receipt = {
+    ...data,
+    jti: uuidv4(),
+  };
+  const filename = `${receipt.jti}.json`;
+  const blob = new Blob([receipt], { type: mimetype });
+  saveAs(blob, filename);
+}
+
+export function downloadSigned(data) {
   const receipt = {
     ...data,
     jti: uuidv4(),

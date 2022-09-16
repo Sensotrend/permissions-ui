@@ -1,0 +1,26 @@
+{
+  "jurisdiction": "EU",
+  "moc": "web form",
+  "sub": "dpo.bubious@example.com",
+  "notice": "https://dubious.example.com/notice",
+  "policy_uri": "https://dubious.example.com/privacy.html",
+  "data_controller": {
+    "on_behalf": true,
+    "company": "Dubious, Inc.",
+    "address": "1 Dubious Drive, Nowhere Island, Metaverse",
+    "email": "dpo.dubious@example.com",
+    "phone": "+0 000000001"
+  },
+  "purpose": [
+    [
+      "Monetize your data on your behalf",
+      "core_function",
+      "health"
+    ]
+  ],
+  "sensitive": [
+    "health"
+  ],
+  "scopes": "read",
+  "iss": "https://dubious.example.com"
+}

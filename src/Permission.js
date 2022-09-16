@@ -1,8 +1,7 @@
 import { useContext } from 'react';
 
-import { download } from './ConsentReceipt';
-import PermissionsContext from './PermissionsContext';
-import consentDetails from './resources/consentDetailsGoodHealth.json';
+import { download, downloadSigned } from './ConsentReceipt';
+import ProcessorsContext from './ProcessorsContext';
 
 export function getPrimaryRecipient(permission) {
   return permission?.provision?.actor?.find(a => a?.role?.coding?.some(c =>
@@ -21,18 +20,22 @@ function Permission({ data }) {
     auditEvents,
     givePermission,
     rejectPermission,
-  } = useContext(PermissionsContext);
+  } = useContext(ProcessorsContext);
 
   const {
+    consentDetails,
     id,
+    processor,
     sourceAttachment,
     status,
   } = data;
 
+  console.log({ data });
+
   const primaryRecipient = getPrimaryRecipient(data);
   const purpose = sourceAttachment?.title;
   const details = sourceAttachment?.url
-  const used = auditEvents[id]?.length;
+  const used = auditEvents[processor]?.length;
 
   return (
     <div id={`permission-${id}`} className="permission">
@@ -59,7 +62,7 @@ function Permission({ data }) {
           <details>
             <summary>Inspect use...</summary>
             <ul>
-              {auditEvents[id].map((e => (
+              {auditEvents[processor].map((e => (
                 <li key={e.id} dangerouslySetInnerHTML={renderNarrative(e)} />
               )))}
             </ul>
@@ -98,7 +101,7 @@ function Permission({ data }) {
                 onClick={(e) => {
                   e.preventDefault();
                   window.history.pushState(null, document.title, `?receipt&id=${id}`);
-                  download(consentDetails);
+                  downloadSigned(consentDetails);
                 }}
               >
                 Download Consent Receipt (JWE)
@@ -142,10 +145,11 @@ function Permission({ data }) {
                 href={`?receipt&id=${id}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  alert('This integration is not yet implemented.');
+                  window.history.pushState('fairdrop://', document.title, `?receipt&id=${id}`);
+                  download(consentDetails, 'application/cr+json');
                 }}
               >
-                Manage with FairDrop
+                Store to FairDrive
               </a>
             </p>
             <p>
@@ -159,20 +163,17 @@ function Permission({ data }) {
                 Manage with Meeco
               </a>
             </p>
-
           </details>
-
-
         )
         : null
       }
 
       {((status === 'proposed') || (status === 'rejected'))
-        ? <button className="success" onClick={() => givePermission(id)}>Allow</button>
+        ? <button className="success" onClick={() => givePermission(processor)}>Allow</button>
         : null
       }
       {((status === 'proposed') || (status === 'active'))
-        ? <button className="warning" onClick={() => rejectPermission(id)}>Deny</button>
+        ? <button className="warning" onClick={() => rejectPermission(processor)}>Deny</button>
         : null
       }
     </div>

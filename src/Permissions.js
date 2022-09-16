@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 
 import Permission, { getPrimaryRecipient } from './Permission';
-import PermissionsContext from './PermissionsContext';
+import ProcessorsContext from './ProcessorsContext';
 
 function sortByRecipientName(a, b) {
   const nameA = getPrimaryRecipient(a);
@@ -17,14 +17,19 @@ function sortByRecipientName(a, b) {
 }
 
 function Permissions() {
-  const { permissions } = useContext(PermissionsContext);
+  const { processors } = useContext(ProcessorsContext);
 
   const categorizedPermissions = useMemo(() => {
-    const categorized = Object.values(permissions).reduce((o, p) => {
-      if (!o[p.status]) {
-        o[p.status] = [];
+    const categorized = Object.keys(processors).reduce((o, k) => {
+      const { permission } = processors[k];
+      const { status } = permission;
+      if (!o[status]) {
+        o[status] = [];
       }
-      o[p.status].push(p);
+      o[status].push({
+        ...permission,
+        processor: k,
+      });
       return o;
     }, {});
     return {
@@ -33,7 +38,7 @@ function Permissions() {
       rejectedPermissions: categorized.rejected?.sort(sortByRecipientName) || [],
       inactivePermissions: categorized.inactive?.sort(sortByRecipientName) || [],
     };
-  }, [permissions]);
+  }, [processors]);
 
   const {
     requestedPermissions,
@@ -51,7 +56,7 @@ function Permissions() {
           <section id="requested">
             <h2>Requested</h2>
             {requestedPermissions.map(p => (
-              <Permission key={p.id} data={p} />
+              <Permission key={p.processor} data={p} />
             ))}
           </section>
         )
@@ -62,7 +67,7 @@ function Permissions() {
           <section id="active">
             <h2>Active</h2>
             {activePermissions.map(p => (
-              <Permission key={p.id} data={p} />
+              <Permission key={p.processor} data={p} />
             ))}
           </section>
         )
@@ -73,7 +78,7 @@ function Permissions() {
           <section id="rejected">
             <h2>Rejected</h2>
             {rejectedPermissions.map(p => (
-              <Permission key={p.id} data={p} />
+              <Permission key={p.processor} data={p} />
             ))}
           </section>
         )
@@ -84,7 +89,7 @@ function Permissions() {
           <section id="inactive">
             <h2>Inactive</h2>
             {inactivePermissions.map(p => (
-              <Permission key={p.id} data={p} />
+              <Permission key={p.processor} data={p} />
             ))}
           </section>
         )

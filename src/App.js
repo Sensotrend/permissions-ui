@@ -1,11 +1,11 @@
 import Permissions from './Permissions';
-import { PermissionsContextProvider } from './PermissionsContext';
+import { ProcessorsContextProvider } from './ProcessorsContext';
 
 function App() {
   return (
-    <PermissionsContextProvider>
+    <ProcessorsContextProvider>
       <Permissions />
-    </PermissionsContextProvider>
+    </ProcessorsContextProvider>
   );
 }
 

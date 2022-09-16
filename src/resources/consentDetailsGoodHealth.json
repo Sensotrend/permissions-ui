@@ -22,6 +22,5 @@
     "health"
   ],
   "scopes": "read",
-  "jti": "b9ee1393d7a1300d2095aefcd50003c02c6e47235e02a8718a92d3f7018e8639a52ed14ba9b28c82549d2ddcdac5577c2b528994db8ea2ca83e100f456c9cb5e",
   "iss": "https://goodhealthclinic.example.com"
 }
