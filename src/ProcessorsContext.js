@@ -47,8 +47,6 @@ export function ProcessorsContextProvider({ processors : propsProcessors, childr
     return o;
   }, {}));
 
-  console.log({ defaultProcessors, processors, auditEvents });
-
   useEffect(() => {
     let timeoutId;
     function accessData() {
@@ -67,7 +65,6 @@ export function ProcessorsContextProvider({ processors : propsProcessors, childr
     const { permission } = processors[processorId] || {};
     if (!permission || permission.status === 'inactive') {
       // Not modifying an unknown or inactive permission.
-      console.error('No permission', processorId, processors);
       return undefined;
     }
     // Make a new object so context listeners notice the change!
@@ -97,8 +94,6 @@ export function ProcessorsContextProvider({ processors : propsProcessors, childr
     const newAuditEvents = {
       ...auditEvents,
     };
-
-    console.log({ newAuditEvents, processor });
 
     newAuditEvents[processor].push(auditEvent);
     setAuditEvents(newAuditEvents);

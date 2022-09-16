@@ -11,6 +11,22 @@ root.render(
   </React.StrictMode>
 );
 
+function Version() {
+  const version = process.env.REACT_APP_VERSION;
+  return (
+    <data value={version}>{`v.${version}`}</data>
+  );
+}
+
+
+const version = ReactDOM.createRoot(document.getElementById('version'));
+version.render(
+  <React.StrictMode>
+    <Version />
+  </React.StrictMode>
+);
+
+
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

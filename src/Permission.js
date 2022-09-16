@@ -30,8 +30,6 @@ function Permission({ data }) {
     status,
   } = data;
 
-  console.log({ data });
-
   const primaryRecipient = getPrimaryRecipient(data);
   const purpose = sourceAttachment?.title;
   const details = sourceAttachment?.url
