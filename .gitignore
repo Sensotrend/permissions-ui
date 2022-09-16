@@ -13,9 +13,9 @@
 
 # java build
 java-build/
-webapp/*
-!webapp/WEB-INF
-!webapp/META-INF
+WebContent/*
+!WebContent/WEB-INF
+!WebContent/META-INF
 
 # misc
 .DS_Store

@@ -21,9 +21,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "prebuild": "del-cli webapp/* !webapp/classes !webapp/WEB-INF !webapp/META-INF",
+    "prebuild": "del-cli WebContent/* !WebContent/classes !WebContent/WEB-INF !WebContent/META-INF",
     "build": "react-scripts build",
-    "postbuild": "copyfiles -u 1 -a \"build/**/*.*\" webapp/",
+    "postbuild": "copyfiles -u 1 -a \"build/**/*.*\" WebContent/",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
