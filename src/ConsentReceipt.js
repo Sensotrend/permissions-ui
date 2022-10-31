@@ -10,7 +10,7 @@ export function download(data, mimetype = 'application/json') {
     jti: uuidv4(),
   };
   const filename = `${receipt.jti}.json`;
-  const blob = new Blob([receipt], { type: mimetype });
+  const blob = new Blob([JSON.stringify(receipt)], { type: mimetype });
   saveAs(blob, filename);
 }
 
@@ -22,7 +22,7 @@ export function downloadSigned(data) {
   generateJwtRS256(receipt)
   .then((jwt) => {
     const filename = `${receipt.jti}.jwt`;
-    const blob = new Blob([jwt], { type: 'application/jwt' });
+    const blob = new Blob([JSON.stringify(jwt)], { type: 'application/jwt' });
     saveAs(blob, filename);
   });
 }

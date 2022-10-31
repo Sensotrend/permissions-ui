@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useRef, useState } from 'react';
 import AuditEvent from './AuditEvent';
 
 // HL7 FHIR Consent resources.
@@ -42,24 +42,44 @@ export function ProcessorsContextProvider({ processors : propsProcessors, childr
 
   const [processors, setProcessors] = useState(propsProcessors || defaultProcessors);
 
-  const [auditEvents, setAuditEvents] = useState(Object.keys(processors).reduce((o, k) => {
+  function auditEventReducer(state, action) {
+    return {
+      ...state,
+      [action.processor]: [...state[action.processor], action.event],
+    };
+  }
+
+  const initialEvents = Object.keys(processors).reduce((o, k) => {
     o[k] = [];
     return o;
-  }, {}));
+  }, {});
+
+  const [auditEvents, addAuditEvent] = useReducer(auditEventReducer, initialEvents);
+
+  const activeProcessors = useRef([]);
+
+  useEffect(() => {
+    activeProcessors.current = Object.keys(processors)
+      .filter(k => processors[k].permission.status === 'active');
+  }, [processors]);
 
   useEffect(() => {
     let timeoutId;
-    function accessData() {
-      Object.keys(processors).filter(k => processors[k].permission.status === 'active').forEach((k) => {
-        logAccess(k);
+
+    function logAccess() {
+      activeProcessors.current.forEach((processor) => {
+        addAuditEvent({ processor, event: new AuditEvent() });
       });
-      timeoutId = setTimeout(accessData, 30000);
+      timeoutId = setTimeout(() => {
+        logAccess();
+      }, 30000);
     }
-    accessData();
+    logAccess();
+
     return (() => {
       clearTimeout(timeoutId);
     });
-  }, [processors]);
+  }, []);
 
   function getPermission(processorId) {
     const { permission } = processors[processorId] || {};
@@ -89,21 +109,11 @@ export function ProcessorsContextProvider({ processors : propsProcessors, childr
     set(processorId, permission);
   }
 
-  function logAccess(processor) {
-    const auditEvent = new AuditEvent();
-    const newAuditEvents = {
-      ...auditEvents,
-    };
-
-    newAuditEvents[processor].push(auditEvent);
-    setAuditEvents(newAuditEvents);
-  }
-
   function set(processorId, permission) {
     const newProcessors = {
       ...processors,
       [processorId]: {
-        ...processors.processorId,
+        ...processors[processorId],
         permission,
       }
     }

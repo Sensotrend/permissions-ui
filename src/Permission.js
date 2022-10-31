@@ -1,5 +1,6 @@
-import { useContext } from 'react';
+import { useContext, Fragment } from 'react';
 
+import { downloadBundle } from './AuditEvent';
 import { download, downloadSigned } from './ConsentReceipt';
 import ProcessorsContext from './ProcessorsContext';
 
@@ -14,7 +15,7 @@ function renderNarrative(resource) {
   return { __html: narrative.substring(1, narrative.length - 1) };
 }
 
-function Permission({ data }) {
+function Permission({ permission, receipt }) {
 
   const {
     auditEvents,
@@ -23,17 +24,16 @@ function Permission({ data }) {
   } = useContext(ProcessorsContext);
 
   const {
-    consentDetails,
     id,
-    processor,
     sourceAttachment,
     status,
-  } = data;
+  } = permission;
 
-  const primaryRecipient = getPrimaryRecipient(data);
+  const processor = receipt?.iss;
+
+  const primaryRecipient = getPrimaryRecipient(permission);
   const purpose = sourceAttachment?.title;
   const details = sourceAttachment?.url
-  const used = auditEvents[processor]?.length;
 
   return (
     <div id={`permission-${id}`} className="permission">
@@ -51,117 +51,133 @@ function Permission({ data }) {
       }
       {details
         ? (
-          <p><a href={details}>Details...</a></p>
-        )
-        : null
-      }
-      {used
-        ? (
-          <details>
-            <summary>Inspect use...</summary>
-            <ul>
-              {auditEvents[processor].map((e => (
-                <li key={e.id} dangerouslySetInnerHTML={renderNarrative(e)} />
-              )))}
-            </ul>
-            <p>
+          <p>
             <a
-              href={`?auditLog&id=${id}`}
+              href={details}
               onClick={(e) => {
                 e.preventDefault();
-                window.history.pushState(null, document.title, `?auditLog&id=${id}`);
+                alert(`This link would lead to the details describing the use of the data. These details are provided by the party asking for the data. In this demo case, the URL would be ${details}`);
               }}
             >
-              Download access log...
+              Details...
             </a>
           </p>
-
-          </details>
         )
         : null
       }
       {status !== 'proposed'
         ? (
-          <details>
-            <summary>Download receipt...</summary>
-            <p>
-              You can download the receipt of the choice you have made regarding this
-              permission request.
-            </p>
-            <p>
-              There are many apps that help you manage these consent receipts, and to 
-              keep track of all the permissions you have given to different apps that care
-              about your rights.
-            </p>
-            <p>
-              <a
-                href={`?receipt&id=${id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.history.pushState(null, document.title, `?receipt&id=${id}`);
-                  downloadSigned(consentDetails);
-                }}
-              >
-                Download Consent Receipt (JWE)
-              </a>
-            </p>
-            <p>
-              <a
-                href={`?receipt&id=${id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert('This integration is not yet implemented.');
-                }}
-              >
-                Manage with DataYogi
-              </a>
-            </p>
-            <p>
-              <a
-                href={`?receipt&id=${id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert('This integration is not yet implemented.');
-                }}
-              >
-                Manage with DigiMe
-              </a>
-            </p>
-            <p>
-              <a
-                href={`?receipt&id=${id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert('This integration is not yet implemented.');
-                }}
-              >
-                Manage with Fair&amp;Smart
-              </a>
-            </p>
-            <p>
-              <a
-                href={`?receipt&id=${id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  window.history.pushState('fairdrop://', document.title, `?receipt&id=${id}`);
-                  download(consentDetails, 'application/cr+json');
-                }}
-              >
-                Store to FairDrive
-              </a>
-            </p>
-            <p>
-              <a
-                href={`?receipt&id=${id}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert('This integration is not yet implemented.');
-                }}
-              >
-                Manage with Meeco
-              </a>
-            </p>
-          </details>
+          <Fragment>
+            <details>
+              <summary>Inspect use...</summary>
+              {auditEvents[processor].length
+              ? (
+                <Fragment>
+                  <ul>
+                    {auditEvents[processor].map((e => (
+                      <li key={e.id} dangerouslySetInnerHTML={renderNarrative(e)} />
+                    )))}
+                  </ul>
+                  <p>
+                    <a
+                      href={`?auditLog&id=${id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.history.pushState(null, document.title, `?auditLog&id=${id}`);
+                        downloadBundle(auditEvents[processor]);                        
+                      }}
+                    >
+                      Download access log...
+                    </a>
+                  </p>
+                </Fragment>
+              )
+              : (
+              <p>No access yet</p>
+              )
+              }
+            </details>
+            <details>
+              <summary>Download receipt...</summary>
+              <p>
+                You can download the receipt of the choice you have made regarding this permission
+                request.
+              </p>
+              <p>
+                There are many apps that help you manage these consent receipts, and to keep track
+                of all the permissions you have given to different apps that care about your
+                rights.
+              </p>
+              <p>
+                <a
+                  href={`?receipt&id=${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.history.pushState(null, document.title, `?receipt&id=${id}`);
+                    downloadSigned(receipt);
+                  }}
+                >
+                  Download Consent Receipt (JWE)
+                </a>
+              </p>
+              <p>
+                <a
+                  href={`?receipt&id=${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    alert('This integration is not yet implemented.');
+                  }}
+                >
+                  Manage with DataYogi
+                </a>
+              </p>
+              <p>
+                <a
+                  href={`?receipt&id=${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    alert('This integration is not yet implemented.');
+                  }}
+                >
+                  Manage with DigiMe
+                </a>
+              </p>
+              <p>
+                <a
+                  href={`?receipt&id=${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    alert('This integration is not yet implemented.');
+                  }}
+                >
+                  Manage with Fair&amp;Smart
+                </a>
+              </p>
+              <p>
+                <a
+                  href={`?receipt&id=${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.history.pushState('fairdrop://', document.title, `?receipt&id=${id}`);
+                    download(receipt, 'application/cr+json');
+                  }}
+                >
+                  Store to FairDrive
+                </a>
+              </p>
+              <p>
+                <a
+                  href={`?receipt&id=${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    alert('This integration is not yet implemented.');
+                  }}
+                >
+                  Manage with Meeco
+                </a>
+              </p>
+            </details>
+          </Fragment>
         )
         : null
       }

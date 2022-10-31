@@ -21,13 +21,14 @@ function Permissions() {
 
   const categorizedPermissions = useMemo(() => {
     const categorized = Object.keys(processors).reduce((o, k) => {
-      const { permission } = processors[k];
+      const { permission, details } = processors[k];
       const { status } = permission;
       if (!o[status]) {
         o[status] = [];
       }
       o[status].push({
-        ...permission,
+        permission,
+        details,
         processor: k,
       });
       return o;
@@ -56,7 +57,7 @@ function Permissions() {
           <section id="requested">
             <h2>Requested</h2>
             {requestedPermissions.map(p => (
-              <Permission key={p.processor} data={p} />
+              <Permission key={p.processor} permission={p.permission} receipt={p.details} />
             ))}
           </section>
         )
@@ -67,7 +68,7 @@ function Permissions() {
           <section id="active">
             <h2>Active</h2>
             {activePermissions.map(p => (
-              <Permission key={p.processor} data={p} />
+              <Permission key={p.processor} permission={p.permission} receipt={p.details} />
             ))}
           </section>
         )
@@ -78,7 +79,7 @@ function Permissions() {
           <section id="rejected">
             <h2>Rejected</h2>
             {rejectedPermissions.map(p => (
-              <Permission key={p.processor} data={p} />
+              <Permission key={p.processor} permission={p.permission} receipt={p.details} />
             ))}
           </section>
         )
@@ -89,7 +90,7 @@ function Permissions() {
           <section id="inactive">
             <h2>Inactive</h2>
             {inactivePermissions.map(p => (
-              <Permission key={p.processor} data={p} />
+              <Permission key={p.processor} permission={p.permission} receipt={p.details} />
             ))}
           </section>
         )
