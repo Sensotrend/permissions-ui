@@ -42,12 +42,43 @@
           </ul>
         </details>
       </header>
+      <aside>
+        <details open>
+          <summary>
+            This interactive demo runs fully locally on the browser, with no server communication.
+          </summary>
+          <p>When you load the page, it is initialized with three permission requests. When you
+            grant any of the permissions (click the Allow button), a background thread starts that
+            creates mock data access requests every 30 seconds. 
+          </p>
+          <p>The mock data access requests result in AuditEvents being created. You can watch these
+            accumulate in the UI under the <strong>Inspect use...</strong> details element.
+          </p>
+          <p>You can also download the resulting HL7 FHIR Bundle of AuditEvent resources.</p>
+          <p>A proper implementation would most likely group data access requests rather than just
+            listing all of them.
+          </p>
+          <p>You can also download the Consent Receipt object as a signed JWE object, or you can
+            store it to FairDrive. On an Android device, you can use the <a
+            href="https://github.com/fairDataSociety/fairOS-dfs-android-demo/releases/">FairOS
+            example app</a> to store the Consent Receipt into FairDrive.
+          </p>
+          <p>The other MyData operators are just listed as an example, and are not implemented. The
+            point is to show that without proper Consent Receipt interoperability we would need to
+            create an implementation for each of the operators separately. However, if the MyData
+            operators would agree on a shared mime type for consent receipt, it would be enough for
+            us to implement one <strong>Download Receipt</strong> button, and the implementation
+            would work with all of them.
+          </p>
+        </details>
+      </aside>
       <main id="root">
         <noscript>You need to enable JavaScript to run this app.</noscript>
       </main>
       <footer>
         <p>
-          &copy;2022 <a href="https://www.sensotrend.com/">Sensotrend Oy</a>. Licensed under the <a
+          Permissions Demo App <span id="version"></span> &copy;2022 <a
+          href="https://www.sensotrend.com/">Sensotrend Oy</a>. Licensed under the <a
           href="https://github.com/Sensotrend/permissions-ui/blob/main/LICENSE">MIT License</a>.
           See the source code in <a
           href="https://github.com/Sensotrend/permissions-ui/">GitHub</a>.
