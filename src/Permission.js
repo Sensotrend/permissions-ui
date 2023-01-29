@@ -1,3 +1,4 @@
+import { base64url } from 'jose';
 import { useContext, Fragment } from 'react';
 
 import { downloadBundle } from './AuditEvent';
@@ -114,10 +115,22 @@ function Permission({ permission, receipt }) {
                   onClick={(e) => {
                     e.preventDefault();
                     window.history.pushState(null, document.title, `?receipt&id=${id}`);
+                    download(receipt, 'application/cr+json');
+                  }}
+                >
+                  Download a plain Consent Receipt (JSON)
+                </a>
+              </p>
+              <p>
+                <a
+                  href={`?receipt&id=${id}`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.history.pushState(null, document.title, `?receipt&id=${id}`);
                     downloadSigned(receipt);
                   }}
                 >
-                  Download Consent Receipt (JWE)
+                  Download a signed Consent Receipt (JWE)
                 </a>
               </p>
               <p>
@@ -158,8 +171,27 @@ function Permission({ permission, receipt }) {
                   href={`?receipt&id=${id}`}
                   onClick={(e) => {
                     e.preventDefault();
-                    window.history.pushState('fairdrop://', document.title, `?receipt&id=${id}`);
-                    download(receipt, 'application/cr+json');
+                    const encoded = base64url.encode(JSON.stringify(receipt));
+                    const fdUrl = 'https://fairdatasociety.github.io/fairdrive-desktop-app';
+                    const fDwithdata = `${
+                      fdUrl
+                    }?file=%2Fconsent%2F${
+                      id
+                    }.json&data=${
+                      encoded
+                    }`;
+                    try {
+                      window.setTimeout(() => {
+                        window.location = fDwithdata;
+                      }, 200);
+                      window.location = `fairdrive://fairdrive.org/consent/${
+                        id
+                      }.json?data=${
+                        encoded
+                      }`;
+                    } catch {
+                      window.location = fDwithdata;
+                    }
                   }}
                 >
                   Store to FairDrive
